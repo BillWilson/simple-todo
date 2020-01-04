@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build: .docker
+    restart: unless-stopped
+    tty: true
+    depends_on:
+      - db
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - backend
+    environment:
+      APP_URL: http://localhost:8080
+
+  web:
+    image: nginx:mainline
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - backend
+
+  #MySQL Service
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "33061:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql/
+    networks:
+      - backend
+
+#Docker Networks
+networks:
+  backend:
+    driver: bridge
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
