@@ -2,30 +2,12 @@
 
 namespace App\Actions\Auth;
 
-use Lorisleiva\Actions\Action;
+use Carbon\Carbon;
+use App\Actions\Action;
+use Illuminate\Support\Collection;
 
 class TokenStatusAction extends Action
 {
-    /**
-     * Determine if the user is authorized to make this action.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the action.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [];
-    }
-
     /**
      * Execute the action and return a result.
      *
@@ -33,6 +15,13 @@ class TokenStatusAction extends Action
      */
     public function handle()
     {
-        // Execute the action.
+        /* @var $claims Collection */
+        $claims = collect(auth()->payload());
+
+        return [
+            'issued_at' => Carbon::parse($claims->get('iat')),
+            'expired_at' => Carbon::parse($claims->get('exp')),
+            'ttl' => auth()->factory()->getTTL() * 60,
+        ];
     }
 }

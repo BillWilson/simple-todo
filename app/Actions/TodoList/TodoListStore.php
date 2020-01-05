@@ -8,16 +8,6 @@ use App\Actions\Action;
 class TodoListStore extends Action
 {
     /**
-     * Determine if the user is authorized to make this action.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
      * Get the validation rules that apply to the action.
      *
      * @return array

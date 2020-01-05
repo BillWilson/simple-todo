@@ -2,20 +2,11 @@
 
 namespace App\Actions\Auth;
 
-use Lorisleiva\Actions\Action;
+use App\Actions\Action;
+use Illuminate\Http\Response;
 
 class LoginAction extends Action
 {
-    /**
-     * Determine if the user is authorized to make this action.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the action.
      *
@@ -23,7 +14,17 @@ class LoginAction extends Action
      */
     public function rules()
     {
-        return [];
+        return [
+            'email' => [
+                'required',
+                'email',
+            ],
+            'password' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ];
     }
 
     /**
@@ -33,6 +34,12 @@ class LoginAction extends Action
      */
     public function handle()
     {
-        // Execute the action.
+        $credentials = $this->validated();
+
+        if (!$token = auth()->guard('api')->attempt($credentials)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Invalid credentials');
+        }
+
+        return ['token' => $token];
     }
 }

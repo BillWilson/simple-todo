@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +11,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::namespace('TodoList')->group(function () {
+Route::namespace('TodoList')->middleware(['api', 'auth:api'])->group(function () {
     Route::get('todo-list', 'TodoListIndex')->name('todo.index');
     Route::get('todo-list/{todoList}', 'TodoListShow')->name('todo.show');
 
@@ -22,4 +20,13 @@ Route::namespace('TodoList')->group(function () {
     Route::delete('todo-list/{todoList}', 'TodoListDestroy')->name('todo.destroy');
 
     Route::delete('todo-list', 'TodoListDestroyAll')->name('todo.destroy.all');
+});
+
+Route::namespace('Auth')->middleware('api')->group(function () {
+    Route::post('auth/login', 'LoginAction')->name('auth.login');
+
+    Route::middleware('auth:api')->group(function () {
+        Route::get('auth/refresh-token', 'RefreshTokenAction')->name('auth.refresh-token');
+        Route::get('auth/token-status', 'TokenStatusAction')->name('auth.token-status');
+    });
 });
