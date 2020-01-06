@@ -32,5 +32,10 @@ docker-compose exec app php artisan jwt:secret
 docker-compose exec app php artisan migrate --seed
 ```
 
+## Run test
+```
+vendor/bin/phpunit --testdox -v
+```
+
 ## Usage
-Check api document: https://documenter.getpostman.com/view/826839/SWLe78Fr?version=latest#3a5457b7-d89f-4f9c-a3a0-d836a26825f5
+Check api document: https://documenter.getpostman.com/view/826839/SWLe78Fr?version=latest
