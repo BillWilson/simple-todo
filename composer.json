@@ -11,13 +11,13 @@
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "itsgoingd/clockwork": "^4.0",
         "laravel/framework": "6.*",
         "laravel/tinker": "^2.0",
         "lorisleiva/laravel-actions": "^0.2.5",
         "tymon/jwt-auth": "1.*"
     },
     "require-dev": {
+        "itsgoingd/clockwork": "^4.0",
         "barryvdh/laravel-ide-helper": "^2.6",
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",

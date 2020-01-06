@@ -33,7 +33,7 @@ class TodoListUpdate extends Action
             ],
             'done_at' => [
                 'nullable',
-                'datetime',
+                'date',
             ],
         ];
     }

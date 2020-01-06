@@ -16,6 +16,5 @@ $factory->define(TodoList::class, function (Faker $faker) {
         'title' => $faker->name,
         'content' => $items,
         'attachment' => $faker->url,
-        'done_at' => now(),
     ];
 });
