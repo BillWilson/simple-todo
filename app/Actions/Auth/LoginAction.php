@@ -4,6 +4,7 @@ namespace App\Actions\Auth;
 
 use App\Actions\Action;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class LoginAction extends Action
 {
@@ -36,7 +37,7 @@ class LoginAction extends Action
     {
         $credentials = $this->validated();
 
-        if (!$token = auth()->guard('api')->attempt($credentials)) {
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
             abort(Response::HTTP_UNAUTHORIZED, 'Invalid credentials');
         }
 

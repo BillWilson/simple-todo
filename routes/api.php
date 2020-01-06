@@ -22,11 +22,8 @@ Route::namespace('TodoList')->middleware(['api', 'auth:api'])->group(function ()
     Route::delete('todo-list', 'TodoListDestroyAll')->name('todo.destroy.all');
 });
 
-Route::namespace('Auth')->middleware('api')->group(function () {
+Route::namespace('Auth')->middleware(['api', 'auth:api'])->group(function () {
     Route::post('auth/login', 'LoginAction')->name('auth.login');
-
-    Route::middleware('auth:api')->group(function () {
-        Route::get('auth/refresh-token', 'RefreshTokenAction')->name('auth.refresh-token');
-        Route::get('auth/token-status', 'TokenStatusAction')->name('auth.token-status');
-    });
+    Route::get('auth/refresh-token', 'RefreshTokenAction')->name('auth.refresh-token');
+    Route::get('auth/token-status', 'TokenStatusAction')->name('auth.token-status');
 });

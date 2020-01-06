@@ -2,20 +2,52 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Exceptions\UnauthorizedApiException;
 
-class Authenticate extends Middleware
+class Authenticate
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
+     * @var Request
      */
-    protected function redirectTo($request)
+    protected $request;
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param Request $request
+     * @param Closure $next
+     *
+     * @return mixed
+     * @throws UnauthorizedApiException
+     */
+    public function handle(Request $request, Closure $next)
     {
-        if (! $request->expectsJson()) {
-            return abort(401);
+        $this->request = $request;
+
+        if ($this->routesToCheck()) {
+            $this->authenticate();
         }
+        return $next($request);
+    }
+
+    /**
+     * @throws UnauthorizedApiException
+     */
+    protected function authenticate()
+    {
+        if (!Auth::guard('api')->user()) {
+            throw new UnauthorizedApiException('Access token invalid or expired');
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function routesToCheck()
+    {
+        return !$this->request->routeIs('auth.login');
     }
 }
